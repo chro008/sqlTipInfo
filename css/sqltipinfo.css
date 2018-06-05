@@ -4,55 +4,49 @@
 
 
 .sys-sqltipinfo-wrap {
-	position: absolute;
-	width: 0;
-	height: 0;
+    position: relative;
 }
 
 .sys-sqltipinfo-container {
-	width: 180px;
-	height: 100px;
-	overflow: auto;
-	border: 1px solid #ccc;
-	display: none;
-	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-	-moz-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-	-webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-	position: absolute;
-	background: #fff;
+    width: 180px;
+    height: 100px;
+    overflow: auto;
+    border: 1px solid #ccc;
+    display: none;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    background: #fff;
+    z-index: 999;
 }
 
 .sys-sqltipinfo-container ul {
-	padding: 0;
-	margin: 0;
+    padding: 0;
+    margin: 0;
 }
 
 .sys-sqltipinfo-container ul > li {
-	height: 19px;
-	line-height: 19px;
-	border-bottom: 1px solid #f9f9f9;
-	text-indent: 12px;
-	cursor: pointer;
-	display: inline-block;
-	width: 100%;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	-o-text-overflow: ellipsis;
-	-icab-text-overflow: ellipsis;
+    height: 19px;
+    line-height: 19px;
+    border-bottom: 1px solid #f9f9f9;
+    text-indent: 12px;
+    cursor: pointer;
+    display: inline-block;
+    width: 100%;
 }
 
 .sys-sqltipinfo-container ul > li:hover,
 .sys-sqltipinfo-container ul > li.selected {
-	background-color: #6488c2;
-	color: white;
+    background-color: #6488c2;
+    color: white;
 }
 
 .sys-sqltipinfo-cloneTextArea {
-	float: left;
-	visibility: hidden;
-	position: absolute;
-	left: 0;
-	top: 0;
-	cursor: text;
+    float: left;
+    visibility: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    cursor: text;
 }
