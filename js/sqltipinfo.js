@@ -3,26 +3,27 @@
  * @author ming
  */
  (function($){
-	'use strict';
-	 
-	$.prototype.addSqlTipInfo = function (options) {
+    
+    'use strict';
+
+    $.prototype.addSqlTipInfo = function (options) {
         return new SqlTipInfo(this, options);
     };
 
     function SqlTipInfo(jqobj, options) {
         this.jqobj = jqobj;
-		var defaultOption = this.defaultOption;
+        var defaultOption = this.defaultOption;
         this.options = $.extend({}, defaultOption, options);
         this.init();
     }
 
     SqlTipInfo.prototype = {
         keys: ["ADD", "ALL", "ALTER", "ANALYZE", "AND", "AS", "ASC", "ASENSITIVE", "BEFORE", "BETWEEN", "BIGINT", "BINARY", "BLOB", "BOTH", "BY", "CALL", "CASCADE", "CASE", "CHANGE", "CHAR", "CHARACTER", "CHECK", "COLLATE", "COLUMN", "CONDITION", "CONNECTION", "CONSTRAINT", "CONTINUE", "CONVERT", "CREATE", "CROSS", "CURRENT_DATE", "CURRENT_TIME", "CURRENT_TIMESTAMP", "CURRENT_USER", "CURSOR", "DATABASE", "DATABASES", "DAY_HOUR", "DAY_MICROSECOND", "DAY_MINUTE", "DAY_SECOND", "DEC", "DECIMAL", "DECLARE", "DEFAULT", "DELAYED", "DELETE", "DESC", "DESCRIBE", "DETERMINISTIC", "DISTINCT", "DISTINCTROW", "DIV", "DOUBLE", "DROP", "DUAL", "EACH", "ELSE", "ELSEIF", "ENCLOSED", "ESCAPED", "EXISTS", "EXIT", "EXPLAIN", "FALSE", "FETCH", "FLOAT", "FLOAT4", "FLOAT8", "FOR", "FORCE", "FOREIGN", "FROM", "FULLTEXT", "GOTO", "GRANT", "GROUP", "HAVING", "HIGH_PRIORITY", "HOUR_MICROSECOND", "HOUR_MINUTE", "HOUR_SECOND", "IF", "IGNORE", "IN", "INDEX", "INFILE", "INNER", "INOUT", "INSENSITIVE", "INSERT", "INT", "INT1", "INT2", "INT3", "INT4", "INT8", "INTEGER", "INTERVAL", "INTO", "IS", "ITERATE", "JOIN", "KEY", "KEYS", "KILL", "LABEL", "LEADING", "LEAVE", "LEFT", "LIKE", "LIMIT", "LINEAR", "LINES", "LOAD", "LOCALTIME", "LOCALTIMESTAMP", "LOCK", "LONG", "LONGBLOB", "LONGTEXT", "LOOP", "LOW_PRIORITY", "MATCH", "MEDIUMBLOB", "MEDIUMINT", "MEDIUMTEXT", "MIDDLEINT", "MINUTE_MICROSECOND", "MINUTE_SECOND", "MOD", "MODIFIES", "NATURAL", "NOT", "NO_WRITE_TO_BINLOG", "NULL", "NUMERIC", "ON", "OPTIMIZE", "OPTION", "OPTIONALLY", "OR", "ORDER", "OUT", "OUTER", "OUTFILE", "PRECISION", "PRIMARY", "PROCEDURE", "PURGE", "RAID0", "RANGE", "READ", "READS", "REAL", "REFERENCES", "REGEXP", "RELEASE", "RENAME", "REPEAT", "REPLACE", "REQUIRE", "RESTRICT", "RETURN", "REVOKE", "RIGHT", "RLIKE", "SCHEMA", "SCHEMAS", "SECOND_MICROSECOND", "SELECT", "SENSITIVE", "SEPARATOR", "SET", "SHOW", "SMALLINT", "SPATIAL", "SPECIFIC", "SQL", "SQLEXCEPTION", "SQLSTATE", "SQLWARNING", "SQL_BIG_RESULT", "SQL_CALC_FOUND_ROWS", "SQL_SMALL_RESULT", "SSL", "STARTING", "STRAIGHT_JOIN", "TABLE", "TERMINATED", "THEN", "TINYBLOB", "TINYINT", "TINYTEXT", "TO", "TRAILING", "TRIGGER", "TRUE", "UNDO", "UNION", "UNIQUE", "UNLOCK", "UNSIGNED", "UPDATE", "USAGE", "USE", "USING", "UTC_DATE", "UTC_TIME", "UTC_TIMESTAMP", "VALUES", "VARBINARY", "VARCHAR", "VARCHARACTER", "VARYING", "WHEN", "WHERE", "WHILE", "WITH", "WRITE", "X509", "XOR", "YEAR_MONTH", "ZEROFILL"],
-		
-		defaultOption : {
-			highlight : false
-		},
-		
+
+        defaultOption: {
+            highlight: false
+        },
+
         init: function () {
             this.identifier = this.getIdentifier();
             this.initTipInfo();
@@ -54,6 +55,10 @@
         cloneTextArea: function () {
             var thisJqObj = this.jqobj;
             thisJqObj.wrap("<div class='sys-sqltipinfo-wrap'></div>");
+            thisJqObj.parent(".sys-sqltipinfo-wrap").css({
+                height: thisJqObj.outerHeight(true),
+                width: thisJqObj.outerWidth(true)
+            });
             this.clone = $("<div class='sys-sqltipinfo-cloneTextArea lang-sql'></div>");
             this.clone.css({
                 height: thisJqObj.height(),
@@ -81,14 +86,12 @@
                     index = thisobj.tipInfoContainer.find("li[class='selected']").index();
                     if (e.keyCode === 38 && index > 0) {
                         index--;
-                        thisobj.tipInfoContainer.find("li").removeClass("selected");
-                        thisobj.tipInfoContainer.find("li").eq(index).addClass("selected");
+                        freshTipInfoContainer(index);
                         return false;
                     }
                     if (e.keyCode === 40 && thisobj.tipInfoContainer.find("li").length > (index + 1)) {
                         index++;
-                        thisobj.tipInfoContainer.find("li").removeClass("selected");
-                        thisobj.tipInfoContainer.find("li").eq(index).addClass("selected");
+                        freshTipInfoContainer(index);
                         return false;
                     }
                     if (e.keyCode === 13) {
@@ -98,18 +101,25 @@
                     return false;
                 }
 
+                function freshTipInfoContainer(index) {
+                    thisobj.tipInfoContainer.find("li").removeClass("selected");
+                    thisobj.tipInfoContainer.find("li").eq(index).addClass("selected");
+                    var top = Math.max((index - 4), 0) * 20;
+                    thisobj.tipInfoContainer.scrollTop(top);
+                }
+
             });
 
             thisJqObj.on("blur", function () {
-				if(thisobj.options.highlight) {
-					thisobj.tipInfoContainer.hide();
-					thisobj.clone.html(thisJqObj.val());
-					thisJqObj.hide();
-					thisobj.clone.each(function (i, block) {
-						hljs.highlightBlock(block);
-					});
-					thisobj.clone.css("visibility", "visible");
-				}
+                thisobj.tipInfoContainer.hide();
+                if (thisobj.options.highlight) {
+                    thisobj.clone.html(thisJqObj.val());
+                    thisJqObj.hide();
+                    thisobj.clone.each(function (i, block) {
+                        hljs.highlightBlock(block);
+                    });
+                    thisobj.clone.css("visibility", "visible");
+                }
             });
 
             thisJqObj.on("keyup click", function (e) {
@@ -248,6 +258,8 @@
                     thisJqObj[0].selectionStart = thisJqObj[0].selectionEnd = location;
                 }
             }
+
+            thisJqObj.trigger("blur");
         }
     };
 	
