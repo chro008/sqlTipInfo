@@ -5,4 +5,4 @@ you could write sql in textarea with tip info,The demo is as follows;
 
 
 详情可见demo 
-https://www.easytake.top/github/sqltip/demo.html
+https://github.easytake.top/sqltip/demo.html
