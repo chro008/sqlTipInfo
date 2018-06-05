@@ -163,7 +163,9 @@
             thisobj.clone.on("click", function () {
                 $(this).css("visibility", "hidden");
                 thisJqObj.show();
+		thisJqObj.focus();
                 setSlindLocation();
+		thisJqObj.trigger("click");
             });
 
             function getPosOfSlindRoudStr() {
@@ -254,7 +256,6 @@
                     sel.collapse();
                     sel.select();
                 } else {
-                    thisJqObj.focus();
                     thisJqObj[0].selectionStart = thisJqObj[0].selectionEnd = location;
                 }
             }
