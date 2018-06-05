@@ -1,0 +1,25 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>测试</title>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+	<script src="js/highlight.pack.js"></script>
+	<script src="js/sqltipinfo.js"></script>
+    <link rel="stylesheet" href="css/default.css">
+	<link rel="stylesheet" href="css/sqltipinfo.css">
+</head>
+<body>
+<div class="container">
+    <h1>mysql输入框提示信息插件</h1>
+	<h3>引入相应的js和css，调用方法jq.addSqlTipInfo()，</h3>
+	<h5>tips:如果需要高亮效果（历来highlight.pack.css和default.css），传入option->highlight:true(jq.addSqlTipInfo({highlight:true}))</h5>
+    <textarea name=" " id="test" cols="30" rows="10" style="width:1024px;resize:none;"></textarea>
+</div>
+</body>
+
+<script>
+    $("#test").addSqlTipInfo({highlight:true});
+</script>
+
+
+</html>
